@@ -5,7 +5,7 @@
     <groupId>cloud.localstack</groupId>
     <artifactId>localstack-utils</artifactId>
     <packaging>jar</packaging>
-    <version>0.1.16</version>
+    <version>0.1.17</version>
     <name>localstack-utils</name>
 
     <description>Java utilities for the LocalStack platform.</description>
@@ -197,6 +197,7 @@
                             <include>com.amazonaws:aws-java-sdk-core</include>
                             <include>com.amazonaws:aws-java-sdk-kinesis</include>
                             <include>com.amazonaws:aws-java-sdk-lambda</include>
+                            <include>com.amazonaws:aws-java-sdk-s3</include>
                             <include>com.amazonaws:aws-java-sdk-sqs</include>
                             <include>com.amazonaws:aws-lambda-java-events</include>
                             <include>com.amazonaws:aws-lambda-java-core</include>

@@ -1,6 +1,7 @@
 package cloud.localstack;
 
 import cloud.localstack.lambda.DDBEventParser;
+import cloud.localstack.lambda.S3EventParser;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
@@ -11,8 +12,6 @@ import com.amazonaws.services.lambda.runtime.events.SNSEvent;
 import com.amazonaws.services.lambda.runtime.events.SQSEvent;
 import com.amazonaws.util.StringInputStream;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
@@ -100,10 +99,14 @@ public class LambdaExecutor {
 				}
 			} else if (records.stream().filter(record -> record.containsKey("dynamodb")).count() > 0) {
 				inputObject = DDBEventParser.parse(records);
+
+			} else if (records.stream().anyMatch(record -> record.containsKey("s3"))) {
+
+				inputObject = S3EventParser.parse(records);
+
 			} else if (records.stream().anyMatch(record -> record.containsKey("sqs"))) {
 				inputObject = reader.readValue(fileContent, SQSEvent.class);
 			}
-			//TODO: Support other events (S3...)
 		}
 
 		Context ctx = new LambdaContext();
